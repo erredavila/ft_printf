@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   length_parser.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rdavila <rdavila@student.42.us.org>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/06 21:14:03 by rdavila           #+#    #+#             */
+/*   Updated: 2017/04/10 11:54:04 by rdavila          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libft.h>
 #include <ft_printf.h>
 
-uintmax_t	parse_uint_length(va_list args, t_flags flags)
+uintmax_t	parse_unsigned(va_list args, t_flags flags)
 {
 	uintmax_t	nbr;
 
@@ -23,7 +35,7 @@ uintmax_t	parse_uint_length(va_list args, t_flags flags)
 	return (nbr);
 }
 
-size_t		parse_sint_length(va_list args, t_flags flags)
+intmax_t	parse_signed(va_list args, t_flags flags)
 {
 	intmax_t	nbr;
 

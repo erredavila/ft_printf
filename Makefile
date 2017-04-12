@@ -6,7 +6,7 @@
 #    By: rdavila <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/09 13:18:39 by rdavila           #+#    #+#              #
-#    Updated: 2017/04/06 11:53:26 by rdavila          ###   ########.fr        #
+#    Updated: 2017/04/10 17:03:48 by rdavila          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,18 +38,18 @@ PRINTF = ft_printf.c \
 		format_parser.c \
 		length_parser.c \
 		add_padding.c \
-		helpers.c \
-		ft_printf_handle_percent.c \
-		ft_printf_handle_str.c \
-		ft_printf_handle_wstr.c \
-		ft_printf_handle_char.c \
-		ft_printf_handle_wchar.c \
-		ft_printf_handle_int.c \
-		ft_printf_handle_hex.c \
-		ft_printf_handle_octal.c \
-		ft_printf_handle_unsigned.c \
-		ft_printf_handle_ptr.c \
-		ft_printf_handle_null.c
+		generic_unsigned.c \
+		handle_percent.c \
+		handle_str.c \
+		handle_wstr.c \
+		handle_char.c \
+		handle_wchar.c \
+		handle_int.c \
+		handle_hex.c \
+		handle_octal.c \
+		handle_unsigned.c \
+		handle_ptr.c \
+		handle_null.c
 
 LIBFTSRC = $(patsubst %, libft/%, $(LIBFT))
 PRINTFSRC = $(patsubst %, src/%, $(PRINTF))
@@ -59,13 +59,10 @@ PRINTFOBJ = $(patsubst src/%.c, $(BUILDDIR)/%.o, $(PRINTFSRC))
 
 all: $(NAME)
 
-$(NAME): dir $(LIBFTOBJ) $(PRINTFOBJ)
+$(NAME): $(LIBFTOBJ) $(PRINTFOBJ)
 	    ar rc $(NAME) $(LIBFTOBJ) $(PRINTFOBJ)
 		ranlib $(NAME)
 		gcc $(FLAGS) $(INCLUDES) main.c $(NAME)
-
-dir:
-	    mkdir -p $(BUILDDIR)
 
 $(LIBFTOBJ): $(BUILDDIR)/%.o : $(LIBFTDIR)/%.c
 		gcc $(FLAGS) $(INCLUDES) -c $< -o $@
@@ -73,16 +70,15 @@ $(LIBFTOBJ): $(BUILDDIR)/%.o : $(LIBFTDIR)/%.c
 $(PRINTFOBJ): $(BUILDDIR)/%.o : src/%.c
 		gcc $(FLAGS) $(INCLUDES) -c $< -o $@
 
-#
 p: $(PRINTFOBJ)
 	    ar rc $(NAME) $(LIBFTOBJ) $(PRINTFOBJ)
 		ranlib $(NAME)
 		gcc $(FLAGS) $(INCLUDES) main.c $(NAME)
 		./a.out
-#
 
 clean:
-	    /bin/rm -rf $(BUILDDIR)
+	    /bin/rm -rf $(LIBFTOBJ)
+	    /bin/rm -rf $(PRINTFOBJ)
 
 fclean: clean
 		/bin/rm -rf $(NAME)

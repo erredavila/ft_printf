@@ -1,25 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helpers.c                                          :+:      :+:    :+:   */
+/*   generic_unsigned.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdavila <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 13:41:24 by rdavila           #+#    #+#             */
-/*   Updated: 2017/04/06 14:13:12 by rdavila          ###   ########.fr       */
+/*   Updated: 2017/04/10 14:22:37 by rdavila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <ft_printf.h>
 
-int	force_prefix(size_t num, char *base, t_flags flags, char *prefix)
+int		ft_printf_numstrlen(uintmax_t num, char *base, char *prefix,
+		t_flags flags)
+{
+	int	len;
+	int	numstrlen;
+
+	len = ft_num_length_base(num, base);
+	numstrlen = len;
+	if (!num && flags.got_precision && !flags.precision)
+		numstrlen = 0;
+	else if (flags.got_precision)
+		numstrlen = ft_max(len, flags.precision);
+	if (flags.prefix && prefix && num)
+		numstrlen += ft_strlen(prefix);
+	return (numstrlen);
+}
+
+int		force_prefix(uintmax_t num, char *base, t_flags flags, char *prefix)
 {
 	int		len;
 	int		cut;
 
 	cut = ft_strlen(prefix);
-	len = ft_printf_calc_nbrstrlen(num, base, prefix, flags) + cut;
+	len = ft_printf_numstrlen(num, base, prefix, flags) + cut;
 	if (flags.got_width && !flags.left_align && !flags.pad_zero)
 	{
 		add_padding(len, flags.width, ' ');
@@ -32,34 +49,27 @@ int	force_prefix(size_t num, char *base, t_flags flags, char *prefix)
 	return (ft_printf_handle_uint(num, flags, base, NULL) + cut);
 }
 
-int	ft_printf_calc_nbrstrlen(uintmax_t num, char *base, char *prefix, t_flags flags)
+void	ft_printf_putnbr(uintmax_t num, char *base, t_flags flags,
+		int *numstrlen)
 {
-	int	num_len;
-	int	numstrlen;
+	int len;
 
-	num_len = ft_num_length_base(num, base);
-	if (!num && flags.got_precision && !flags.precision)
-		numstrlen = 0;
-	else if (flags.got_precision)
-		numstrlen = ft_max(num_len, flags.precision);
-	else
-		numstrlen = num_len;
-	if (flags.prefix && prefix && num)
-		numstrlen += ft_strlen(prefix);
-	return (numstrlen);
-}
-
-void	ft_putnbrbp(uintmax_t num, int len, char *base, t_flags flags)
-{
+	len = ft_num_length_base(num, base);
 	if (flags.got_precision)
 		add_padding(len, flags.precision, '0');
+	if (flags.prefix && !num && flags.got_precision &&
+			!ft_strcmp(base, "01234567"))
+	{
+		ft_putchar('0');
+		*numstrlen += 1;
+	}
 	if (!num && flags.got_precision && !flags.precision)
 		return ;
-	else
-		ft_putnbrbase(num, base);
+	ft_putnbrbase(num, base);
 }
 
-int		ft_printf_handle_uint(uintmax_t num, t_flags flags, char *base, char *prefix)
+int		ft_printf_handle_uint(uintmax_t num, t_flags flags, char *base,
+		char *prefix)
 {
 	int	len;
 	int	numstrlen;
@@ -67,7 +77,7 @@ int		ft_printf_handle_uint(uintmax_t num, t_flags flags, char *base, char *prefi
 	if (flags.got_precision)
 		flags.pad_zero = 0;
 	len = ft_num_length_base(num, base);
-	numstrlen = ft_printf_calc_nbrstrlen(num, base, prefix, flags);
+	numstrlen = ft_printf_numstrlen(num, base, prefix, flags);
 	if (flags.got_width && !flags.left_align && flags.pad_zero)
 	{
 		if (flags.prefix)
@@ -80,12 +90,7 @@ int		ft_printf_handle_uint(uintmax_t num, t_flags flags, char *base, char *prefi
 		add_padding(numstrlen, flags.width, ' ');
 	if (flags.prefix && num)
 		ft_putstr(prefix);
-	if (flags.prefix && !num && !ft_strcmp(base, "01234567") && flags.got_precision)
-	{
-		ft_putstr(prefix);
-		numstrlen++;
-	}
-	ft_putnbrbp(num, len, base, flags);
+	ft_printf_putnbr(num, base, flags, &numstrlen);
 	if (flags.got_width && flags.left_align)
 		add_padding(numstrlen, flags.width, ' ');
 	return (flags.got_width ? ft_max(numstrlen, flags.width) : numstrlen);

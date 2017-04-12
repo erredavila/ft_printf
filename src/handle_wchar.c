@@ -1,34 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_handle_char.c                            :+:      :+:    :+:   */
+/*   handle_wchar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdavila <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 18:19:28 by rdavila           #+#    #+#             */
-/*   Updated: 2017/04/05 20:17:44 by rdavila          ###   ########.fr       */
+/*   Updated: 2017/04/06 15:52:30 by rdavila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <ft_printf.h>
 
-int		ft_printf_handle_char(char c, va_list args, t_flags flags)
+int		ft_printf_handle_wchar(char c, va_list args, t_flags flags)
 {
-	char	ch;
+	wchar_t	ch;
+	int		chr_len;
 
-	if (flags.length == l)
-		return (ft_printf_handle_wchar(c, args, flags));
+	(void)c;
+	ch = va_arg(args, int);
+	if (ch <= 0x7F)
+		chr_len = 1;
+	else if (ch <= 0x7FF)
+		chr_len = 2;
+	else if (ch <= 0xFFFF)
+		chr_len = 3;
+	else if (ch <= 0x10FFFF)
+		chr_len = 4;
 	else
-	{
-		ch = va_arg(args, int);
-		if (flags.got_width && !flags.left_align)
-			add_padding(1, flags.width, flags.pad_zero ? '0' : ' ');
-		ft_putchar(ch);
-		if (flags.got_width && flags.left_align)
-			add_padding(1, flags.width, flags.pad_zero ? '0' : ' ');
-		if (flags.got_width)
-			return (ft_max(1, flags.width));
-		return (1);
-	}
+		chr_len = 0;
+	if (flags.got_width && !flags.left_align)
+		add_padding(1, flags.width, ' ');
+	ft_putwchar(ch);
+	if (flags.got_width && flags.left_align)
+		add_padding(1, flags.width, ' ');
+	if (flags.got_width)
+		return (ft_max(chr_len, flags.width));
+	return (chr_len);
 }

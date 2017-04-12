@@ -6,7 +6,7 @@
 /*   By: rdavila <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/18 15:01:52 by rdavila           #+#    #+#             */
-/*   Updated: 2017/04/05 19:55:34 by rdavila          ###   ########.fr       */
+/*   Updated: 2017/04/12 14:00:13 by rdavila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int			handler(char **format, va_list args)
 		return (-1);
 	if (!ft_parse_length(format, &flags))
 		return (-1);
+	if (!**format)
+		return (0);
 	handle = get_handler_function(**format);
 	printed = handle(**format, args, flags);
 	(*format)++;
@@ -80,7 +82,7 @@ int			ft_inner_printf(const char *format, va_list args, size_t chars)
 		chars += next - format;
 		return (ft_inner_printf(next, args, chars));
 	}
-	else 
+	else
 	{
 		if ((printed = handler((char **)&format, args)) == -1)
 			return (-1);

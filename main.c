@@ -6,7 +6,7 @@
 /*   By: rdavila <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/16 18:13:35 by rdavila           #+#    #+#             */
-/*   Updated: 2017/04/06 15:48:24 by rdavila          ###   ########.fr       */
+/*   Updated: 2017/04/12 11:37:28 by rdavila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,22 @@ int		main()
 **	flags '+', ' ', '0', '#' results in undefined behavior with 's' conversion specifier
 */
 
-	/*
-	printf("ESCAPED '%%'\n");
+	printf("-----------------\n");
+	printf("ESCAPED (%%)\n");
+	printf("-----------------\n");
 	printf("A: [%%]\n");
 	ft_printf("R: [%%]\n");
 	printf("A: [%010%]\n");
 	ft_printf("R: [%010%]\n");
-	*/
 
-	//printf("\n\n%O\n\n", 42);
-	/*
-	char *s = "Hello";
-	printf("STRINGS:\n");
+	printf("-----------------\n");
+	printf("STRINGS (s):\n");
+	printf("-----------------\n");
 	// flags '+', ' ', '0', '#' results in undefined behavior with 's' conversion specifier
+	char *s = "Hello";
 	// normal	
-	printf("A: [%s] [%s]\n", s, s);
-	ft_printf("R: [%s] [%s]\n", s, s);
+	printf("A: [%10.2s] [%5.1s]\n", s, s);
+	ft_printf("R: [%10.2s] [%5.1s]\n", s, s);
 	// '-' flag	
 	printf("A: [%-10s]\n", s);
 	ft_printf("R: [%-10s]\n", s);
@@ -55,139 +55,112 @@ int		main()
 	// precision
 	printf("A: [%.4s]\n", s);
 	ft_printf("R: [%.4s]\n", s);
-	*/
 
-	/*
-	printf("CHARACTERS:\n");
+	printf("-----------------\n");
+	printf("CHARACTERS (c):\n");
+	printf("-----------------\n");
 	// flags '#', '0', '+', ' ' results in undefined behavior with 'x' conversion specifier
 	printf("A: [%c]\t[%c]\n", 'A', 65);
 	ft_printf("R: [%c]\t[%c]\n", 'A', 65);
-	printf("[%10.5c]\n", 'a');
-	ft_printf("[%10.5c]\n", 'a');
-	*/
+	printf("[%5c]\n", 'a');
+	ft_printf("[%5c]\n", 'a');
 
-	/*
-	// Strange case
-	printf("%#6o\n", 2500);
-	ft_printf("%#6o\n", 2500);
-	printf("@moulitest: [%#.0o] [%#.0x]\n", 42, 42);
-	ft_printf("@moulitest: [%#.0o] [%#.0x]\n", 42, 42);
-	printf("%#.0o\n", 0);
-	ft_printf("%#.0o\n", 0);
-	printf("%#x\n", 0);
-	ft_printf("%#x\n", 0);
-	*/
-
-	/*
+	printf("-----------------\n");
+	printf("WIDE CHARACTERS (lc, ls, C, S):\n");
+	printf("-----------------\n");
 	setlocale(LC_ALL, "en_US.UTF-8");
-	//setlocale(LC_ALL, "");
-	wchar_t t = 8364;
-	printf("%lc\n", t);
-	ft_printf("%lc\n", t);
-	//wchar_t *s = L"€€€";
-	wchar_t v = L'🐼';
-	ft_printf("A: [%lc]\n", v);
-	printf("R: [%lc]\n", v);
-	wchar_t *a = L"ÊM-M-^QÊM-^XØ‰∏M-ÂM-^O™ÁM-^L´„M-M-^B";
-	ft_printf("{%030S}", a);
-	*/
+	wchar_t g = 8364;
+	wchar_t panda = L'🐼';
+	printf("%lc\n", g);
+	ft_printf("%lc\n", g);
+	printf("%C\n", panda);
+	ft_printf("%C\n", panda);
+	wchar_t *t = L"Це український тест для широких символів";
+	ft_printf("A: [%ls]\n", t);
+	printf("R: [%ls]\n", t);
 
-	/*
-	int n = 0;
+	printf("-----------------\n");
 	printf("HEX (x, X):\n");
+	printf("-----------------\n");
+	int n = 42;
 	// flags '+', ' ', '0' results in undefined behavior with 'x' conversion specifier
-	//printf("A: [%#x]\t[%X]\n", n, n);
-	//ft_printf("R: [%#x]\t[%X]\n", n, n);
-	printf("[%#x]\n", n);
-	ft_printf("[%#x]\n", n);
-	//n = printf("%010x\n", 542);
-	//printf("ORIGINAL: %d\n", n);
-	//n = ft_printf("%010x\n", 542);
-	//printf("MINE: %d\n", n);
-	*/
+	printf("A: [%x] [%X]\n", n, n);
+	ft_printf("R: [%x] [%X]\n", n, n);
+	printf("[%#10x]\n", n);
+	ft_printf("[%#10x]\n", n);
+	printf("[%-#10x]\n", n);
+	ft_printf("[%-#10x]\n", n);
+	printf("A: [%010x]\n", 542);
+	ft_printf("R: [%010x]\n", 542);
 
-	/*
-	int n = 0;
+	printf("-----------------\n");
 	printf("OCTAL (o, O):\n");
+	printf("-----------------\n");
+	int m = 42;
 	// flags '+', ' ', '0' results in undefined behavior with 'x' conversion specifier
-	//printf("A: [%o]\n", n);
-	//ft_printf("R: [%o]\n", n);
-	printf("A: @moulitest: [%#0.x] [%#.0x]\n", n, n);
-	ft_printf("R: @moulitest: [%#0.x] [%#.0x]\n", n, n);
-	int a = printf("A: @moulitest: [%#.o] [%#.0o]\n", n, n);
-	int b = ft_printf("R: @moulitest: [%#.o] [%#.0o]\n", n, n);
-	printf("ORIGINAL: %d\n", a);
-	printf("MINE: %d\n", b);
-	*/
+	printf("A: [%o]\n", m);
+	ft_printf("R: [%o]\n", m);
+	printf("A: [%#0o] [%5o]\n", m, m);
+	ft_printf("R: [%#0o] [%5o]\n", m, m);
+	printf("A: [%#.6o] [%#.6o]\n", m, m);
+	ft_printf("R: [%#.6o] [%#.6o]\n", m, m);
+	printf("A: [%-10o]\n", m);
+	ft_printf("R: [%-10o]\n", m);
 
-	/*
-	int n = 42;
-	printf("INTEGERS:\n");
-	int a = printf("A: [%10.5d]\n", n);
-	int b = ft_printf("R: [%05d]\n", n);
-	printf("ORIGINAL: %d\n", a);
-	printf("MINE: %d\n", b);
-	*/
+	printf("-----------------\n");
+	printf("PREFIX IN OCTAL AND HEX:\n");
+	printf("-----------------\n");
+	printf("[%#10o]\n", 2500);
+	ft_printf("[%#10o]\n", 2500);
+	printf("[%-#10o]\n", 2500);
+	ft_printf("[%-#10o]\n", 2500);
+	printf("@moulitest: [%#.o] [%#.x]\n", 0, 0);
+	ft_printf("@moulitest: [%#.o] [%#.x]\n", 0, 0);
 
-	/*
-	int n = 42;
-	printf("UNSIGNED INTEGERS:\n");
+	printf("-----------------\n");
+	printf("INTEGERS (d, D, i):\n");
+	printf("-----------------\n");
+	int o = 42;
+	printf("A: [%d]\n", o);
+	ft_printf("R: [%d]\n", o);
+	printf("A: [%10d]\n", o);
+	ft_printf("R: [%10d]\n", o);
+	printf("A: [%-10.5d]\n", o);
+	ft_printf("R: [%-10.5d]\n", o);
+
+	printf("-----------------\n");
+	printf("UNSIGNED INTEGERS (u, U):\n");
+	printf("-----------------\n");
+	unsigned int l = 42;
 	// flags '#', '+', ' ' results in undefined behavior with 'x' conversion specifier
-	int a = printf("A: [%.0u]\n", n);
-	int b = ft_printf("R: [%.0u]\n", n);
-	printf("ORIGINAL: %d\n", a);
-	printf("MINE: %d\n", b);
-	*/
+	printf("A: [%u]\n", l);
+	ft_printf("R: [%u]\n", l);
+	printf("A: [%10u]\n", l);
+	ft_printf("R: [%10u]\n", l);
+	printf("A: [%-10.5u]\n", l);
+	ft_printf("R: [%-10.5u]\n", l);
 
-	/*
-	size_t test;
-	test = 42;
-	printf("TST: %lu\n", sizeof(test));
-	*/
-
-	/*
-	printf("POINTERS:\n");
+	printf("-----------------\n");
+	printf("POINTERS (p):\n");
+	printf("-----------------\n");
 	int a;
 	int	*b;	
 	a = 42;
 	b = &a;
-	int x = printf("a: %d\tb: [%20p]\n", a, b);
-	int y = ft_printf("a: %d\tb: [%20p]\n", a, b);
-	printf("ORIGINAL: %d\n", x);
-	printf("MINE: %d\n", y);
-	*/
+	printf("num: %d\tptr: [%p]\n", a, b);
+	ft_printf("num: %d\tptr: [%p]\n", a, b);
+	printf("num: %d\tptr: [%20p]\n", a, b);
+	ft_printf("num: %d\tptr: [%20p]\n", a, b);
 
 	/*
-	printf("{%#.o} {%#.x}\n", 0, 0);
-	ft_printf("{%#.o} {%#.x}", 0, 0);
+	size_t a = 4294967296;
+	printf("Undefined behaviors\n");
+	ft_printf("MINE: %-010s is a string\n", "this");
+	printf("ORIG: this       is a string\n");
+	ft_printf("MINE: %010s is a string\n", "this");
+	printf("ORIG: 000000this is a string\n");
+	ft_printf("MINE: %zhd\n", a);
+	printf("ORIG: %zhd\n", a);
 	*/
-
-	int n = 42;
-	printf("%#o\n", n);
-	printf("-----------------\n");
-	ft_printf("%#o\n", n);
-	printf("-----------------\n");
-	printf("%#.3o\n", n);
-	printf("-----------------\n");
-	ft_printf("%#.3o\n", n);
-	printf("-----------------\n");
-	printf("%#.3x\n", n);
-	printf("-----------------\n");
-	ft_printf("%#.3x\n", n);
-
-	setlocale(LC_ALL, "en_US.UTF-8");
-/*
-	setlocale(LC_ALL, "en_US.UTF-8");
-	wchar_t test1 = L'ÁM-^L´';
-	wchar_t test4 = L'\x2126';
-	wchar_t test2 = L'ÊM-^ZM-^V';
-	wchar_t test3 = L'ÿ≠';
-	printf("-----------------\n");
-	printf("%C\n", test4);
-	ft_printf("%C\n", test4);
-	printf("%lc, %lc\n", test2, test3);
-	ft_printf("%lc, %lc\n", test2, test3);
-	*/
-
 	return (0);
 }

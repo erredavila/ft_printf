@@ -6,7 +6,7 @@
 /*   By: rdavila <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/24 16:25:08 by rdavila           #+#    #+#             */
-/*   Updated: 2017/04/06 13:42:32 by rdavila          ###   ########.fr       */
+/*   Updated: 2017/04/11 20:29:24 by rdavila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,30 @@ char	*ft_parse_precision(char **format, va_list args, t_flags *flags)
 	return (*format);
 }
 
+char	*ft_clean_length(char **format)
+{
+	while (**format == 'h' || **format == 'l' || **format == 'j' ||
+			**format == 'z')
+		(*format)++;
+	return (*format);
+}
+
 char	*ft_parse_length(char **format, t_flags *flags)
 {
-	if (**format == 'h' && *(*format + 1) == 'h')
-	{
-		flags->length = hh;
-		(*format) += 2;
-	}
-	else if (**format == 'l' && *(*format + 1) == 'l')
-	{
-		flags->length = ll;
-		(*format) += 2;
-	}
-	else if (**format == 'h' || **format == 'l' || **format == 'j' ||
+	if (**format == 'h' || **format == 'l' || **format == 'j' ||
 			**format == 'z')
 	{
-		if (**format == 'h')
+		if (**format == 'h' && *(*format + 1) == 'h')
+		{
+			flags->length = hh;
+			(*format)++;
+		}
+		else if (**format == 'l' && *(*format + 1) == 'l')
+		{
+			flags->length = ll;
+			(*format)++;
+		}
+		else if (**format == 'h')
 			flags->length = h;
 		else if (**format == 'l')
 			flags->length = l;
@@ -109,6 +117,7 @@ char	*ft_parse_length(char **format, t_flags *flags)
 		else if (**format == 'z')
 			flags->length = z;
 		(*format)++;
+		return (ft_clean_length(format));
 	}
 	return (*format);
 }

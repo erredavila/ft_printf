@@ -1,24 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_handle_unsigned.c                        :+:      :+:    :+:   */
+/*   handle_int.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdavila <rdavila@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/05 15:22:34 by rdavila           #+#    #+#             */
-/*   Updated: 2017/04/05 15:22:36 by rdavila          ###   ########.fr       */
+/*   Created: 2017/04/06 19:28:52 by rdavila           #+#    #+#             */
+/*   Updated: 2017/04/10 11:55:14 by rdavila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 #include <ft_printf.h>
 
-int		ft_printf_handle_unsigned(char c, va_list args, t_flags flags)
+int		ft_printf_handle_int(char c, va_list args, t_flags flags)
 {
-	uintmax_t	num;
+	intmax_t	num;
+	char		*prefix;
 
-	if (c == 'U')
+	if (c == 'D')
 		flags.length = l;
-	num = parse_uint_length(args, flags);
+	num = parse_signed(args, flags);
+	prefix = "";
+	if (num < 0 || flags.force_sign || flags.blank)
+	{
+		if (num < 0)
+		{
+			num *= -1;
+			prefix = "-";
+		}
+		else if (flags.force_sign)
+			prefix = "+";
+		else if (flags.blank)
+			prefix = " ";
+		return (force_prefix(num, "0123456789", flags, prefix));
+	}
 	return (ft_printf_handle_uint(num, flags, "0123456789", NULL));
 }

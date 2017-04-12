@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_num_length_base.c                               :+:      :+:    :+:   */
+/*   handle_hex.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rdavila <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/21 22:39:04 by rdavila           #+#    #+#             */
-/*   Updated: 2017/04/10 14:24:19 by rdavila          ###   ########.fr       */
+/*   Created: 2017/03/21 22:07:19 by rdavila           #+#    #+#             */
+/*   Updated: 2017/04/10 11:54:54 by rdavila          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
+#include <ft_printf.h>
 
-int		ft_num_length_base(size_t value, char *base)
+int			ft_printf_handle_hex(char c, va_list args, t_flags flags)
 {
-	int		i;
-	size_t	base_len;
+	uintmax_t num;
 
-	i = 0;
-	base_len = ft_strlen(base);
-	if (value == 0)
-		return (1);
-	while (value)
-	{
-		value /= base_len;
-		i++;
-	}
-	return (i);
+	num = parse_unsigned(args, flags);
+	if (c == 'x')
+		return (ft_printf_handle_uint(num, flags, "0123456789abcdef", "0x"));
+	else
+		return (ft_printf_handle_uint(num, flags, "0123456789ABCDEF", "0X"));
 }
