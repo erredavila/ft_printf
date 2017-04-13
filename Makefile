@@ -6,7 +6,7 @@
 #    By: rdavila <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/09 13:18:39 by rdavila           #+#    #+#              #
-#    Updated: 2017/04/10 17:03:48 by rdavila          ###   ########.fr        #
+#    Updated: 2017/04/12 18:33:37 by rdavila          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ FLAGS = -Wall -Wextra -Werror
 INCLUDES = -I includes
 
 LIBFTDIR = libft
+PRINTFDIR = src
 BUILDDIR = obj
 
 LIBFT = ft_memset.c		ft_bzero.c		ft_memcpy.c		ft_memccpy.c		ft_memmove.c \
@@ -51,42 +52,36 @@ PRINTF = ft_printf.c \
 		handle_ptr.c \
 		handle_null.c
 
-LIBFTSRC = $(patsubst %, libft/%, $(LIBFT))
-PRINTFSRC = $(patsubst %, src/%, $(PRINTF))
+LIBFTSRC = $(patsubst %, $(LIBFTDIR)/%, $(LIBFT))
+PRINTFSRC = $(patsubst %, $(PRINTFDIR)/%, $(PRINTF))
 
-LIBFTOBJ = $(patsubst $(LIBFTDIR)/%.c, $(BUILDDIR)/%.o, $(LIBFTSRC))
-PRINTFOBJ = $(patsubst src/%.c, $(BUILDDIR)/%.o, $(PRINTFSRC))
+LIBFTOBJ = $(patsubst %.c, %.o, $(LIBFT))
+PRINTFOBJ = $(patsubst %.c, %.o, $(PRINTF))
+
+LIBFTOBJDIR = $(patsubst %.c, $(BUILDDIR)/%.o, $(LIBFT))
+PRINTFOBJDIR = $(patsubst %.c, $(BUILDDIR)/%.o, $(PRINTF))
 
 all: $(NAME)
 
-$(NAME): $(LIBFTOBJ) $(PRINTFOBJ)
-	    ar rc $(NAME) $(LIBFTOBJ) $(PRINTFOBJ)
+$(NAME):
+		gcc $(FLAGS) $(INCLUDES) -c $(LIBFTSRC)
+		gcc $(FLAGS) $(INCLUDES) -c $(PRINTFSRC)
+		mkdir -p $(BUILDDIR)
+		mv $(LIBFTOBJ) $(PRINTFOBJ) $(BUILDDIR)
+	    ar rc $(NAME) $(LIBFTOBJDIR) $(PRINTFOBJDIR)
 		ranlib $(NAME)
-		gcc $(FLAGS) $(INCLUDES) main.c $(NAME)
 
-$(LIBFTOBJ): $(BUILDDIR)/%.o : $(LIBFTDIR)/%.c
-		gcc $(FLAGS) $(INCLUDES) -c $< -o $@
-
-$(PRINTFOBJ): $(BUILDDIR)/%.o : src/%.c
-		gcc $(FLAGS) $(INCLUDES) -c $< -o $@
-
-p: $(PRINTFOBJ)
-	    ar rc $(NAME) $(LIBFTOBJ) $(PRINTFOBJ)
+p:
+		gcc $(FLAGS) $(INCLUDES) -c $(PRINTFSRC)
+		mkdir -p $(BUILDDIR)
+		mv $(PRINTFOBJ) $(BUILDDIR)
+	    ar rc $(NAME) $(LIBFTOBJDIR) $(PRINTFOBJDIR)
 		ranlib $(NAME)
-		gcc $(FLAGS) $(INCLUDES) main.c $(NAME)
-		./a.out
 
 clean:
-	    /bin/rm -rf $(LIBFTOBJ)
-	    /bin/rm -rf $(PRINTFOBJ)
+	    /bin/rm -rf $(BUILDDIR)
 
 fclean: clean
 		/bin/rm -rf $(NAME)
-		/bin/rm -rf a.out
 
 re: fclean all
-
-# Remove, just for testing
-main: 
-		gcc $(FLAGS) $(INCLUDES) main.c $(NAME)
-		./a.out
